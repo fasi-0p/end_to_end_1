@@ -1,6 +1,7 @@
 from src.datascience.constants import *
 from src.datascience.utils.common import create_directories, read_yaml #i cant import *
 from src.datascience.entity.config_entity import DataIngestconfig
+from src.datascience.entity.config_entity import DataValidationConfig
 
 # You might need this if read_yaml returns a Box object for dot notation access
 # from box import ConfigBox
@@ -34,3 +35,18 @@ class ConfigurationManager:
 
         )
         return data_ingestion_config
+
+    def get_validation_config(self) -> DataValidationConfig:
+        config=self.config.data_validation
+        schema=self.schema.COLUMNS
+
+        create_directories([config.root_dir])
+        
+        data_validation_config=DataValidationConfig(
+            root_dir=config.root_dir,
+            STATUS_FILE=config.STATUS_FILE,
+            unzip_data_dir=config.unzip_data_dir,
+            all_schema=schema 
+        )
+
+        return data_validation_config
